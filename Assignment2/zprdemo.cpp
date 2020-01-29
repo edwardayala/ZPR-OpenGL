@@ -193,8 +193,7 @@ void drawRect3D(void) {
 }
 
 void drawCylinder(void) {
-    float theta_1;
-    float theta_2;
+    float theta;
     float PI = 3.14;
     
     glColor3f(0.9, 0.7, 0.98);
@@ -204,28 +203,29 @@ void drawCylinder(void) {
     glNormal3f(0.0, 0.0, 1.0);
     for (int i = 0; i < 360; i++)
     {
-        theta_1 = i * PI / 180;
-        glVertex3f(cos(theta_1), sin(theta_1) - 3, -2.0);
-        //glVertex3f(cos(theta_1), sin(theta_1) - 3, 3.0);
+        theta = i * PI / 180;
+        glVertex3f(cos(theta), sin(theta) - 3, -2.0);
+        //glVertex3f(cos(theta), sin(theta) - 3, 3.0);
 
     }
 
     // BACK FACE
-    glNormal3f(0.0, 0.0, -1.0);
+    glNormal3f(0.0, 0.0, 1.0);
     for (int i = 0; i < 360; i++)
     {
-        theta_1 = i * PI / 180;
-        //glVertex3f(cos(theta_1), sin(theta_1) - 3, -3.0);
-        glVertex3f(cos(theta_1), sin(theta_1) - 3, 2.0);
+        theta = i * PI / 180;
+        //glVertex3f(cos(theta), sin(theta) - 3, -3.0);
+        glVertex3f(cos(theta), sin(theta) - 3, 2.0);
 
     }
 
     // TUBE
     for (int i = 0; i < 360; i++)
     {
-        theta_1 = i * PI / 180;
-        glVertex3f(cos(theta_1), sin(theta_1) - 3, -2.0);
-        glVertex3f(cos(theta_1), sin(theta_1) - 3, 2.0);
+        theta = i * PI / 180;
+        glNormal3f(cos(theta), sin(theta), 0.0);
+        glVertex3f(cos(theta), sin(theta) - 3, -2.0);
+        glVertex3f(cos(theta), sin(theta) - 3, 2.0);
 
     }
     glEnd();
