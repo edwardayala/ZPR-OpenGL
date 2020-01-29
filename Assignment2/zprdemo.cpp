@@ -1,16 +1,16 @@
-#include "zpr.h"
+/*
+Edward Ayala | 1/28/2020 | CSC - 4351 Computer Graphics | Assignment 2
 
+0       pentagon color = violet - DONE
+1       hexagon color = pink - DONE
+2       cylinder color = lavender -DONE
+3       rectangular prism color = gold - DONE
+4       cube color = red - DONE
+*/
+
+#include "zpr.h"
 #include <stdio.h>
 #include <math.h>
-
-/*
-name = Edward
-        0       pentagon color = violet - DONE
-        1       hexagon color = pink - DONE
-        2       cylinder color = lavender
-        3       rectangular prism color = gold - DONE
-        4       cube color = red - DONE
-*/
 
 /* Macro for checking OpenGL error state */
 
@@ -135,6 +135,7 @@ void drawHexagon(void) {
 void drawRect3D(void) {
     // GL_QUADS go in Counter-Clock Wise direction
     // top left, bottom left, top right, bottom right
+    
     // FRONT FACE - long
     glNormal3fv(&n[0][0]);
     glColor3f(1.0, 1.0, 0.3);
