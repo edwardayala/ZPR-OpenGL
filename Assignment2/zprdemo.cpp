@@ -34,13 +34,22 @@ GLint faces[6][4] = {  /* Vertex indices for the 6 faces of a cube. */
   {4, 5, 1, 0}, {5, 6, 2, 1}, {7, 4, 0, 3} };
 GLfloat v[8][3];  /* Will be filled in with X,Y,Z vertexes. */
 
+int shape = 0;
+
 void
 drawBox(void)
 {
     int i;
     glColor3f(1.0, 0.0, 0.0);
     for (i = 0; i < 6; i++) {
-        glBegin(GL_QUADS);
+        if (shape == 0)
+        {
+            glBegin(GL_QUADS);
+        }
+        else
+        {
+            glBegin(GL_LINE_LOOP);
+        }        
         glNormal3fv(&n[i][0]);
         glVertex3fv(&v[faces[i][0]][0]);
         glVertex3fv(&v[faces[i][1]][0]);
@@ -139,7 +148,14 @@ void drawRect3D(void) {
     // FRONT FACE - long
     glNormal3fv(&n[0][0]);
     glColor3f(1.0, 1.0, 0.3);
-    glBegin(GL_QUADS);
+    if (shape == 0)
+    {
+        glBegin(GL_QUADS);
+    }
+    else
+    {
+        glBegin(GL_LINE_LOOP);
+    }
     glVertex3f(-2.0, 4.0, 1.0); // TOP LEFT
     glVertex3f(2.0, 4.0, 1.0);  // TOP RIGHT
     glVertex3f(2.0, 2.0, 1.0);  // BOTTOM RIGHT
@@ -148,7 +164,14 @@ void drawRect3D(void) {
     
     // BACK FACE - long
     glNormal3fv(&n[1][0]);
-    glBegin(GL_QUADS);
+    if (shape == 0)
+    {
+        glBegin(GL_QUADS);
+    }
+    else
+    {
+        glBegin(GL_LINE_LOOP);
+    }    
     glVertex3f(-2.0, 4.0, -1.0); // TOP LEFT
     glVertex3f(2.0, 4.0, -1.0);  // TOP RIGHT
     glVertex3f(2.0, 2.0, -1.0);  // BOTTOM RIGHT
@@ -157,7 +180,14 @@ void drawRect3D(void) {
 
     // LEFT FACE - short
     glNormal3fv(&n[2][0]);
-    glBegin(GL_QUADS);
+    if (shape == 0)
+    {
+        glBegin(GL_QUADS);
+    }
+    else
+    {
+        glBegin(GL_LINE_LOOP);
+    }    
     glVertex3f(-2.0, 4.0, 1.0); // TOP LEFT
     glVertex3f(-2.0, 2.0, 1.0);  // TOP RIGHT
     glVertex3f(-2.0, 2.0, -1.0);  // BOTTOM RIGHT
@@ -166,7 +196,14 @@ void drawRect3D(void) {
 
     // RIGHT FACE - short
     glNormal3fv(&n[3][0]);
-    glBegin(GL_QUADS);
+    if (shape == 0)
+    {
+        glBegin(GL_QUADS);
+    }
+    else
+    {
+        glBegin(GL_LINE_LOOP);
+    }    
     glVertex3f(2.0, 4.0, 1.0); // TOP LEFT
     glVertex3f(2.0, 2.0, 1.0);  // TOP RIGHT
     glVertex3f(2.0, 2.0, -1.0);  // BOTTOM RIGHT
@@ -175,7 +212,14 @@ void drawRect3D(void) {
 
     // BOTTOM FACE - long
     glNormal3fv(&n[4][0]);
-    glBegin(GL_QUADS);
+    if (shape == 0)
+    {
+        glBegin(GL_QUADS);
+    }
+    else
+    {
+        glBegin(GL_LINE_LOOP);
+    }    
     glVertex3f(-2.0, 2.0, 1.0); // TOP LEFT
     glVertex3f(2.0, 2.0, 1.0);  // TOP RIGHT
     glVertex3f(2.0, 2.0, -1.0);  // BOTTOM RIGHT
@@ -184,7 +228,14 @@ void drawRect3D(void) {
 
     // TOP FACE - long
     glNormal3fv(&n[5][0]);
-    glBegin(GL_QUADS);
+    if (shape == 0)
+    {
+        glBegin(GL_QUADS);
+    }
+    else
+    {
+        glBegin(GL_LINE_LOOP);
+    }    
     glVertex3f(-2.0, 4.0, 1.0); // TOP LEFT
     glVertex3f(2.0, 4.0, 1.0);  // TOP RIGHT
     glVertex3f(2.0, 4.0, -1.0);  // BOTTOM RIGHT
@@ -218,7 +269,8 @@ void drawCylinder(void) {
         glVertex3f(cos(theta), sin(theta) - 3, 2.0);
 
     }
-
+    glEnd();
+    glBegin(GL_QUAD_STRIP);
     // TUBE
     for (int i = 0; i < 360; i++)
     {
@@ -229,6 +281,20 @@ void drawCylinder(void) {
 
     }
     glEnd();
+    
+}
+
+void processNormalKeys(unsigned char key, int x, int y) {
+
+    if (key == 27) {
+        exit(0);
+    }
+    else if (key == 'a') {
+        shape = 1;
+    }
+    else if (key == 's') {
+        shape = 0;
+    }
 }
 
 /* Callback function for drawing */
@@ -238,6 +304,7 @@ void display(void)
     GLERROR;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.3, 0.3, 0.3, 1);
 //    drawAxes();   // cones
     drawBox();
     drawPentagon();
@@ -283,6 +350,7 @@ int main(int argc, char* argv[])
     /* Configure GLUT callback functions */
 
     glutDisplayFunc(display);
+    glutKeyboardFunc(processNormalKeys);
 
     glScalef(0.25, 0.25, 0.25);
 
