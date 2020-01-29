@@ -1,11 +1,17 @@
 /*
 Edward Ayala | 1/28/2020 | CSC - 4351 Computer Graphics | Assignment 2
 
+SHAPES:
 0       pentagon color = violet - DONE
 1       hexagon color = pink - DONE
 2       cylinder color = lavender -DONE
 3       rectangular prism color = gold - DONE
 4       cube color = red - DONE
+
+EXTRA CREDIT: 
+0       scene movement
+1       solid/wireframe - DONE
+2       background color
 */
 
 #include "zpr.h"
@@ -118,7 +124,14 @@ void drawAxes(void)
 void drawPentagon(void) {
     glColor3f(0.93, 0.51, 0.93); // Voilet
     glNormal3fv(&n[0][0]);
-    glBegin(GL_POLYGON);
+    if (shape == 0)
+    {
+        glBegin(GL_POLYGON);
+    }
+    else
+    {
+        glBegin(GL_LINE_LOOP);
+    }    
     glVertex3f(3.0, 1.0, 0.0);
     glVertex3f(4.0, 0.2, 0.0);
     glVertex3f(3.6, -1.0, 0.0);
@@ -131,7 +144,14 @@ void drawPentagon(void) {
 void drawHexagon(void) {
     glColor3f(1.0, 0.75, 0.79); // Pink
     glNormal3fv(&n[0][0]);
-    glBegin(GL_POLYGON);
+    if (shape == 0)
+    {
+        glBegin(GL_POLYGON);
+    }
+    else
+    {
+        glBegin(GL_LINE_LOOP);
+    }
     glVertex3f(-3.0, 1.0, 0.0);
     glVertex3f(-2.0, 0.5, 0.0);
     glVertex3f(-2.0, -0.5, 0.0);
@@ -248,8 +268,14 @@ void drawCylinder(void) {
     float PI = 3.14;
     
     glColor3f(0.9, 0.7, 0.98);
-    glBegin(GL_POLYGON);
-
+    if (shape == 0)
+    {
+        glBegin(GL_POLYGON);
+    }
+    else
+    {
+        glBegin(GL_LINE_LOOP);
+    }
     // FRONT FACE
     glNormal3f(0.0, 0.0, 1.0);
     for (int i = 0; i < 360; i++)
@@ -270,7 +296,14 @@ void drawCylinder(void) {
 
     }
     glEnd();
-    glBegin(GL_QUAD_STRIP);
+    if (shape == 0)
+    {
+        glBegin(GL_QUAD_STRIP);
+    }
+    else
+    {
+        glBegin(GL_LINE_LOOP);
+    }
     // TUBE
     for (int i = 0; i < 360; i++)
     {
@@ -289,11 +322,13 @@ void processNormalKeys(unsigned char key, int x, int y) {
     if (key == 27) {
         exit(0);
     }
-    else if (key == 'a') {
+    else if (key == 'w') {
         shape = 1;
+        glutPostRedisplay();
     }
     else if (key == 's') {
         shape = 0;
+        glutPostRedisplay();
     }
 }
 
@@ -349,8 +384,9 @@ int main(int argc, char* argv[])
 
     /* Configure GLUT callback functions */
 
+    glutKeyboardFunc(processNormalKeys); 
     glutDisplayFunc(display);
-    glutKeyboardFunc(processNormalKeys);
+    
 
     glScalef(0.25, 0.25, 0.25);
 
