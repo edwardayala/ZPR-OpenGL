@@ -17,6 +17,8 @@ EXTRA CREDIT:
 #include "zpr.h"
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
+#include <iostream>
 
 /* Macro for checking OpenGL error state */
 
@@ -333,13 +335,16 @@ void processNormalKeys(unsigned char key, int x, int y) {
 }
 
 /* Callback function for drawing */
-
 void display(void)
 {
     GLERROR;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.3, 0.3, 0.3, 1);
+    std::cout << time(0) << std::endl;
+
+    glClearColor(rand() / 10 * .01, rand() / 10 * .01, rand() / 10 * .01, 1);
+    
+    //glClearColor(0.3, 0.3, 0.3, 1);
 //    drawAxes();   // cones
     drawBox();
     drawPentagon();
@@ -369,7 +374,6 @@ static GLfloat mat_ambient[] = { 0.7, 0.7, 0.7, 1.0 };
 static GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
 static GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 static GLfloat high_shininess[] = { 100.0 };
-
 
 /* Entry point */
 
