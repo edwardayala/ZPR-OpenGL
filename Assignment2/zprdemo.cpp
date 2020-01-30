@@ -11,14 +11,12 @@ SHAPES:
 EXTRA CREDIT: 
 0       scene movement
 1       solid/wireframe - DONE
-2       background color
+2       background color - KINDA DONE
 */
 
 #include "zpr.h"
 #include <stdio.h>
 #include <math.h>
-#include <time.h>
-#include <iostream>
 
 /* Macro for checking OpenGL error state */
 
@@ -287,7 +285,15 @@ void drawCylinder(void) {
         //glVertex3f(cos(theta), sin(theta) - 3, 3.0);
 
     }
-
+    glEnd();
+    if (shape == 0)
+    {
+        glBegin(GL_POLYGON);
+    }
+    else
+    {
+        glBegin(GL_LINE_LOOP);
+    }
     // BACK FACE
     glNormal3f(0.0, 0.0, 1.0);
     for (int i = 0; i < 360; i++)
@@ -321,7 +327,7 @@ void drawCylinder(void) {
 
 void processNormalKeys(unsigned char key, int x, int y) {
 
-    if (key == 27) {
+    if (key == 'q') {
         exit(0);
     }
     else if (key == 'w') {
@@ -334,17 +340,34 @@ void processNormalKeys(unsigned char key, int x, int y) {
     }
 }
 
+double myRand() {
+    return (double)rand() / RAND_MAX;
+}
+
+double r = 1, g = 1, b = 1;
+
+/* Background */
+void changeBackground(double & v) {
+    double eps = v * (myRand() - 0.5);
+    v += eps;
+    if (v < 0)
+        v = 0;
+    if (v > 1)
+        v = 1;
+}
+
 /* Callback function for drawing */
 void display(void)
 {
     GLERROR;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    std::cout << time(0) << std::endl;
-
-    glClearColor(rand() / 10 * .01, rand() / 10 * .01, rand() / 10 * .01, 1);
+ 
+    changeBackground(r);
+    changeBackground(g);
+    changeBackground(b);
+    glClearColor(r, g, b, 1);
     
-    //glClearColor(0.3, 0.3, 0.3, 1);
 //    drawAxes();   // cones
     drawBox();
     drawPentagon();
@@ -390,6 +413,7 @@ int main(int argc, char* argv[])
 
     glutKeyboardFunc(processNormalKeys); 
     glutDisplayFunc(display);
+    glutIdleFunc(display);
     
 
     glScalef(0.25, 0.25, 0.25);
